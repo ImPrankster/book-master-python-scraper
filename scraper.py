@@ -1,6 +1,35 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # book-master web scraping program
+"""
+This is a Python program that scrapes book data from a website using the BeautifulSoup library and inserts the data into a Supabase database. Here's a breakdown of the code:
+
+The program starts with a shebang line (#!/usr/bin/env python3) and a UTF-8 encoding declaration (# -*- coding: utf-8 -*-).
+
+The required libraries are imported: os, typing, postgrest, requests, bs4 (for BeautifulSoup), and supabase.
+
+The program retrieves the root URL of the website to be scraped and retrieves the page content using the requests library.
+
+The BeautifulSoup library is used to parse the HTML content of the page.
+
+The Supabase URL and API key are retrieved from environment variables using the os.environ.get method.
+
+A function insertBook is defined to insert book data into the Supabase database. It takes a dictionary of book data as input.
+
+A function fetchBookInfo is defined to retrieve book data from a specific book page. It takes a URL and category as input.
+
+A function fetchByCategories is defined to retrieve book data from a specific category. It takes a category name and position as input.
+
+A function fetchBooks is defined to retrieve book data from all categories on the website.
+
+The fetchBooks function is called to start the scraping process.
+
+The program uses a series of find and find_all methods from the BeautifulSoup library to extract specific pieces of data from the HTML content.
+
+The extracted data is stored in a dictionary and passed to the insertBook function to be inserted into the Supabase database.
+
+Overall, this program scrapes book data from a website and inserts it into a Supabase database, demonstrating how to use Python to automate web scraping and data storage.
+"""
 
 import os
 from typing import List
@@ -13,7 +42,6 @@ rootUrl = "http://books.toscrape.com/"
 page = requests.get(rootUrl)
 
 soup = bs(page.content, "html.parser")
-
 
 supabaseUrl = os.environ.get("SUPABASE_URL")
 supabaseServiceKey = os.environ.get("SUPABASE_KEY")
@@ -32,7 +60,7 @@ def insertBook(book: dict):
         print(e)
         return
     if len(data.data) > 0:
-        print(data, "book(s) found with title", book["title"])
+        print("book(s) found with title", book["title"])
         return
     else:
         try:
